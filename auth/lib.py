@@ -2,6 +2,7 @@ from urllib.parse import urljoin
 
 import jwt
 import requests
+import os
 
 
 class Verifyer:
@@ -9,7 +10,9 @@ class Verifyer:
     def __init__(self, *, auth_endpoint=None, public_key=None):
         if public_key is None:
             if auth_endpoint is not None:
-                public_key = requests.get(urljoin(auth_endpoint, 'public-key')).text
+                public_key = requests.get(urljoin(auth_endpoint, 'public-key'),
+                                          # verify ssl - defaults to true
+                                          verify=(os.environ.get("VERIFY_SSL")!="0")).text
         assert public_key is not None
         self.public_key = public_key
 

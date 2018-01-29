@@ -21,6 +21,7 @@ _sql_session = None
 
 def setup_engine(connection_string):
     global _sql_engine
+    assert connection_string, "No database defined, please set your DATABASE_URL environment variable"
     _sql_engine = create_engine(connection_string)
     Base.metadata.create_all(_sql_engine)
 
